@@ -193,7 +193,7 @@ function setupEventListeners() {
             const formData = new FormData(this);
             
             // Submit to Formspree
-            fetch('https://formspree.io/f/xpwnqkqv', {
+            fetch('https://formspree.io/f/xldpvyay', {
                 method: 'POST',
                 body: formData,
                 headers: {
