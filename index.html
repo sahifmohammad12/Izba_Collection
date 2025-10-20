@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IZBA Collection - Premium Women's Fashion & Accessories</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Dancing+Script:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="/logo.png" alt="IZBA Collections Logo" class="logo-image">
+                <h2>IZBA Collection</h2>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link">Home</a></li>
+                <li><a href="#products" class="nav-link">Products</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+                <li><a href="#" class="nav-link admin-link" onclick="toggleAdminPanel()">Admin</a></li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>IZBA Collection</h1>
+                <div class="hero-tagline">
+                    <h2>Wear your Confidence in style</h2>
+                </div>
+                <div class="hero-attributes">
+                    <div class="attribute-item">
+                        <i class="fas fa-star"></i>
+                        <span>Trendy</span>
+                    </div>
+                    <div class="attribute-item">
+                        <i class="fas fa-gem"></i>
+                        <span>Classy</span>
+                    </div>
+                    <div class="attribute-item">
+                        <i class="fas fa-infinity"></i>
+                        <span>Timeless</span>
+                    </div>
+                </div>
+                <p>Premium women's fashion and accessories crafted for the modern professional woman</p>
+                <a href="#products" class="cta-button">Explore Collection</a>
+            </div>
+            <div class="hero-logo">
+                <img src="/logo.png" alt="IZBA Collections Logo" class="hero-logo-image">
+            </div>
+        </div>
+    </section>
+
+    <!-- Store Policies Section -->
+    <section class="policies">
+        <div class="container">
+            <h2 class="section-title">Store Policies</h2>
+            <div class="policies-grid">
+                <div class="policy-item">
+                    <div class="policy-icon">
+                        <i class="fas fa-ban"></i>
+                    </div>
+                    <h3>No Cash on Delivery</h3>
+                    <p>We accept online payments only for secure transactions</p>
+                </div>
+                <div class="policy-item">
+                    <div class="policy-icon">
+                        <i class="fas fa-times-circle"></i>
+                    </div>
+                    <h3>No Returns</h3>
+                    <p>All sales are final. Please choose carefully</p>
+                </div>
+                <div class="policy-item">
+                    <div class="policy-icon">
+                        <i class="fas fa-exchange-alt"></i>
+                    </div>
+                    <h3>No Exchange</h3>
+                    <p>Items cannot be exchanged once purchased</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="products" class="products">
+        <div class="container">
+            <h2 class="section-title">Our Collection</h2>
+            <div class="product-filters">
+                <button class="filter-btn active" data-category="all">All</button>
+                <button class="filter-btn" data-category="clothing">Clothing</button>
+                <button class="filter-btn" data-category="accessories">Accessories</button>
+                <button class="filter-btn" data-category="jewelry">Jewelry</button>
+            </div>
+            <div class="product-grid" id="productGrid">
+                <!-- Products will be dynamically loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <h2 class="section-title">About IZBA Collections</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>IZBA Collections is a premium fashion brand specializing in sophisticated women's clothing and accessories. We are committed to delivering exceptional quality and timeless design that empowers professional women to express their unique style with confidence.</p>
+                    <p>Our carefully curated collection combines contemporary trends with classic elegance, ensuring every piece is versatile enough for both professional and social settings. We believe in sustainable fashion and ethical manufacturing practices.</p>
+                </div>
+                <div class="about-image">
+                    <div class="image-placeholder">
+                        <i class="fas fa-gem"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2 class="section-title">Contact Us</h2>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>izbacollection@gmail.com</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <span>+91 9606307566</span>
+                    </div>
+                </div>
+                <form class="contact-form" action="https://formspree.io/f/xpwnqkqv" method="POST">
+                    <input type="hidden" name="_to" value="sahifmohammad12@gmail.com">
+                    <input type="hidden" name="_subject" value="New Contact Form Submission - IZBA Collection">
+                    <input type="text" name="name" placeholder="Your Name" required>
+                    <input type="email" name="email" placeholder="Your Email" required>
+                    <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
+                    <button type="submit">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Image Modal -->
+    <div id="imageModal" class="modal">
+        <div class="modal-content image-modal-content">
+            <span class="close" id="closeImageModal">&times;</span>
+            <img id="modalImage" src="" alt="Product Image">
+            <div class="image-modal-info">
+                <h3 id="modalProductName"></h3>
+                <p id="modalProductPrice"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Panel Modal -->
+    <div id="adminModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Admin Panel</h2>
+                <span class="close" onclick="closeAdminPanel()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="admin-auth" id="adminAuth">
+                    <h3>Admin Login</h3>
+                    <form id="loginForm">
+                        <input type="password" id="adminPassword" placeholder="Enter Admin Password" required>
+                        <button type="submit">Login</button>
+                    </form>
+                </div>
+                <div class="admin-panel" id="adminPanel" style="display: none;">
+                    <h3>Product Management</h3>
+                    <form id="productForm">
+                        <input type="text" id="productName" placeholder="Product Name" required>
+                        <input type="text" id="productPrice" placeholder="Price (₹)" required>
+                        <select id="productCategory" required>
+                            <option value="">Select Category</option>
+                            <option value="clothing">Clothing</option>
+                            <option value="accessories">Accessories</option>
+                            <option value="jewelry">Jewelry</option>
+                        </select>
+                        <textarea id="productDescription" placeholder="Product Description" rows="3" required></textarea>
+                        
+                        <div class="image-upload-section">
+                            <label for="productImageFile" class="image-upload-label">
+                                <i class="fas fa-upload"></i>
+                                Choose Image File
+                            </label>
+                            <input type="file" id="productImageFile" accept="image/*" style="display: none;">
+                            <div class="image-preview" id="imagePreview" style="display: none;">
+                                <img id="previewImg" src="" alt="Preview">
+                                <button type="button" id="removeImage" class="remove-image-btn">×</button>
+                            </div>
+                        </div>
+                        
+                        <div class="or-divider">
+                            <span>OR</span>
+                        </div>
+                        
+                        <input type="url" id="productImageUrl" placeholder="Image URL (optional)">
+                        
+                        <button type="submit">Add Product</button>
+                    </form>
+                    <div class="product-list">
+                        <h4>Current Products</h4>
+                        <div id="adminProductList"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>IZBA Collections</h3>
+                    <p>Premium women's fashion and accessories for the modern professional woman.</p>
+                    <div class="contact-info-footer">
+                        <div class="contact-item-footer">
+                            <i class="fas fa-phone"></i>
+                            <span>+91 9606307566</span>
+                        </div>
+                        <div class="contact-item-footer">
+                            <i class="fas fa-envelope"></i>
+                            <span>izbacollection@gmail.com</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#products">Products</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Follow Us</h4>
+                    <div class="social-links">
+                        <a href="https://www.instagram.com/izba_collection"><i class="fab fa-instagram"></i></a>
+                        <a href="https://wa.me/9606307566" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 IZBA Collections. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
