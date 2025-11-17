@@ -196,27 +196,14 @@
                         <textarea id="productDescription" placeholder="Product Description" rows="3" required></textarea>
                         
                         <div class="image-upload-section">
-                            <label for="productImageFile" class="image-upload-label">
-                                <i class="fas fa-upload"></i>
-                                Choose Image File
-                            </label>
-                            <input type="file" id="productImageFile" accept="image/*" style="display: none;">
-                            <div class="image-preview" id="imagePreview" style="display: none;">
-                                <img id="previewImg" src="" alt="Preview">
-                                <button type="button" id="removeImage" class="remove-image-btn">×</button>
-                            </div>
                         </div>
-                        
-                        <div class="or-divider">
-                            <span>OR</span>
-                        </div>
-                        
-                        <input type="url" id="productImageUrl" placeholder="Image URL (optional)">
+                        <input type="url" id="productImageUrl" placeholder="Image URL" required>
                         
                         <button type="submit">Add Product</button>
                     </form>
                     <div class="product-list">
                         <h4>Current Products</h4>
+                        <button type="button" class="delete-btn" onclick="deleteAllProducts()">Delete All Products</button>
                         <div id="adminProductList"></div>
                     </div>
                 </div>
@@ -269,6 +256,18 @@
         </div>
     </footer>
 
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+    <script>
+        window.firebaseConfig = {
+            apiKey: "AIzaSyBFXqABnerq5ikPRM-qK_atFTqJUCAqij0",
+            authDomain: "izba-collections.firebaseapp.com",
+            projectId: "izba-collections",
+            storageBucket: "izba-collections.firebasestorage.app",
+            messagingSenderId: "247721840942",
+            appId: "1:247721840942:web:c833e7631e1b65142deabf"
+        };
+    </script>
     <script src="script.js"></script>
 </body>
 </html>

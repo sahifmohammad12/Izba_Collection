@@ -1,75 +1,39 @@
 // Global variables
 let products = [];
 let currentFilter = 'all';
-const ADMIN_PASSWORD = 'izba2025'; // Simple password for demo purposes
+const ADMIN_PASSWORD = 'izba2025';
+let db = null;
+let cloudEnabled = false;
+
+function initCloud() {
+    if (window.firebase && window.firebaseConfig && window.firebaseConfig.projectId) {
+        if (!firebase.apps || firebase.apps.length === 0) {
+            firebase.initializeApp(window.firebaseConfig);
+        }
+        db = firebase.firestore();
+        cloudEnabled = true;
+    }
+}
 
 // Initialize the application
-document.addEventListener('DOMContentLoaded', function() {
-    loadProducts();
+document.addEventListener('DOMContentLoaded', async function() {
+    showLoading();
+    await loadProducts();
     renderProducts();
     setupEventListeners();
     setupMobileMenu();
 });
 
 // Load products from localStorage
-function loadProducts() {
-    const savedProducts = localStorage.getItem('izbaProducts');
-    if (savedProducts) {
-        products = JSON.parse(savedProducts);
-    } else {
-        // Default products
-        products = [
-            {
-                id: 1,
-                name: "Professional Blazer",
-                price: 1899,
-                category: "clothing",
-                description: "Tailored blazer in premium wool blend. Perfect for business meetings and professional events. Features structured shoulders and clean lines.",
-                image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=400&h=400&fit=crop"
-            },
-            {
-                id: 2,
-                name: "Classic Pearl Necklace",
-                price: 899,
-                category: "jewelry",
-                description: "Sophisticated pearl necklace with 14k gold accents. Timeless piece that complements both professional and evening attire.",
-                image: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=400&h=400&fit=crop"
-            },
-            {
-                id: 3,
-                name: "Executive Leather Handbag",
-                price: 2499,
-                category: "accessories",
-                description: "Premium leather handbag with multiple compartments and laptop sleeve. Designed for the modern professional woman.",
-                image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=400&fit=crop"
-            },
-            {
-                id: 4,
-                name: "Cashmere Wrap",
-                price: 1599,
-                category: "accessories",
-                description: "Luxurious cashmere wrap in neutral tones. Perfect for layering over business attire or evening wear.",
-                image: "https://images.unsplash.com/photo-1583391733956-6c78276477e1?w=400&h=400&fit=crop"
-            },
-            {
-                id: 5,
-                name: "Silk Blouse",
-                price: 1299,
-                category: "clothing",
-                description: "Elegant silk blouse with subtle detailing. Versatile piece that transitions seamlessly from office to evening events.",
-                image: "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=400&h=400&fit=crop"
-            },
-            {
-                id: 6,
-                name: "Diamond Stud Earrings",
-                price: 1999,
-                category: "jewelry",
-                description: "Classic diamond stud earrings in 14k white gold. Understated elegance for any professional or social occasion.",
-                image: "https://images.unsplash.com/photo-1535632066927-ab7c9f609a8b?w=400&h=400&fit=crop"
-            }
-        ];
-        saveProducts();
+async function loadProducts() {
+    initCloud();
+    if (cloudEnabled) {
+        const snapshot = await db.collection('products').orderBy('createdAt', 'desc').get();
+        products = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        return;
     }
+    const savedProducts = localStorage.getItem('izbaProducts');
+    products = savedProducts ? JSON.parse(savedProducts) : [];
 }
 
 // Save products to localStorage
@@ -275,12 +239,11 @@ function renderProducts() {
 }
 
 // Add new product
-function addProduct() {
+async function addProduct() {
     const name = document.getElementById('productName').value;
     const price = parseFloat(document.getElementById('productPrice').value);
     const category = document.getElementById('productCategory').value;
     const description = document.getElementById('productDescription').value;
-    const imageFile = document.getElementById('productImageFile').files[0];
     const imageUrl = document.getElementById('productImageUrl').value;
 
     if (!name || !price || !category || !description) {
@@ -288,55 +251,61 @@ function addProduct() {
         return;
     }
 
-    if (!imageFile && !imageUrl) {
-        alert('Please either upload an image file or provide an image URL.');
+    if (!imageUrl) {
+        alert('Please provide an image URL.');
         return;
     }
 
-    let imageSource = '';
-    
-    if (imageFile) {
-        // Convert file to base64 data URL
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            imageSource = e.target.result;
-            addProductWithImage(name, price, category, description, imageSource);
-        };
-        reader.readAsDataURL(imageFile);
-    } else {
-        // Use URL
-        imageSource = imageUrl;
-        addProductWithImage(name, price, category, description, imageSource);
-    }
+    await addProductWithImage(name, price, category, description, imageUrl);
 }
 
 // Helper function to add product with image
-function addProductWithImage(name, price, category, description, imageSource) {
+async function addProductWithImage(name, price, category, description, imageSource) {
+    if (cloudEnabled) {
+        await db.collection('products').add({
+            name: name,
+            price: price,
+            category: category,
+            description: description,
+            image: imageSource,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        await loadProducts();
+        renderProducts();
+        renderAdminProducts();
+        document.getElementById('productForm').reset();
+        
+        alert('Product added successfully!');
+        return;
+    }
     const newProduct = {
-        id: Date.now(), // Simple ID generation
+        id: Date.now(),
         name: name,
         price: price,
         category: category,
         description: description,
         image: imageSource
     };
-
     products.push(newProduct);
     saveProducts();
     renderProducts();
     renderAdminProducts();
-    
-    // Reset form
     document.getElementById('productForm').reset();
-    document.getElementById('imagePreview').style.display = 'none';
-    document.getElementById('previewImg').src = '';
     
     alert('Product added successfully!');
 }
 
 // Delete product
-function deleteProduct(id) {
+async function deleteProduct(id) {
     if (confirm('Are you sure you want to delete this product?')) {
+        if (cloudEnabled) {
+            await db.collection('products').doc(String(id)).delete();
+            await loadProducts();
+            renderProducts();
+            renderAdminProducts();
+            alert('Product deleted successfully!');
+            return;
+        }
         products = products.filter(product => product.id !== id);
         saveProducts();
         renderProducts();
@@ -366,6 +335,24 @@ function renderAdminProducts() {
             <button class="delete-btn" onclick="deleteProduct(${product.id})">Delete</button>
         </div>
     `).join('');
+}
+
+async function deleteAllProducts() {
+    if (!confirm('Delete all products?')) return;
+    if (cloudEnabled) {
+        const snapshot = await db.collection('products').get();
+        await Promise.all(snapshot.docs.map(d => db.collection('products').doc(d.id).delete()));
+        await loadProducts();
+        renderProducts();
+        renderAdminProducts();
+        alert('All products deleted');
+        return;
+    }
+    products = [];
+    saveProducts();
+    renderProducts();
+    renderAdminProducts();
+    alert('All products deleted');
 }
 
 // Toggle admin panel
@@ -491,8 +478,6 @@ function showLoading() {
     }
 }
 
-// Add some sample products if none exist
 if (products.length === 0) {
     loadProducts();
-    saveProducts();
 }
